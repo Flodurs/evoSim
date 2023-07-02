@@ -15,6 +15,31 @@ class genAlg: #maybe put this in seperate thread
         
         self.currentBestGene = []
         
+    def run(self,comQ):
+        genCount = 0
+        simulating = False
+        command = "-"
+        while True:
+            
+            
+        
+        
+            if simulating:
+                genCount+=1
+                self.simulateGeneration()
+                
+                
+            if comQ.empty() == False:
+                command=comQ.get()
+                print("ok")
+                
+        
+        
+            if command == "simulating":
+                command = "-"
+                simulating = True
+            
+        
         
     def seedGenes(self):
         for x in range(self.geneNum):
@@ -27,7 +52,7 @@ class genAlg: #maybe put this in seperate thread
         self.w.update()
     
     def placeGeneInWorld(self,world,gene):
-        print("Place Gene in World")
+        #print("Place Gene in World")
         #print(self.genePool[gene])
         for a in range(self.geneLen):
             #print(self.buildingArea[0]+(a%self.buildingArea[2]),int(self.buildingArea[1]+(a/self.buildingArea[3])))
@@ -35,7 +60,7 @@ class genAlg: #maybe put this in seperate thread
                 world.addTile(self.buildingArea[0]+a%self.buildingArea[2],int(self.buildingArea[1]+a/self.buildingArea[3]),self.genePool[gene][a])
             
     def calcFitness(self, tileList): #tileList represents worldstate after simulation aka 100 steps 
-        print("Calculating Fitness")
+        #print("Calculating Fitness")
         fit = 0
         for t in tileList:
             if t.getXY()[0] > 40 and t.getSorte() == 1:
@@ -60,17 +85,17 @@ class genAlg: #maybe put this in seperate thread
             self.w.reset()
             self.placeGeneInWorld(self.w,g)
             
-            print("Start Simulating")
+            #print("Start Simulating")
             
             for step in range(40):
                 self.w.update()
-                print("Gene: ", g , "Step: ", step)
+                #print("Gene: ", g , "Step: ", step)
                 
             self.fitness[g]=self.calcFitness(self.w.getTiles())
 
         #locate best performing gene (or top n genes)
         bestGene = self.genePool[self.fitness.index(max(self.fitness))]
-        print("Top Fitness: ", max(self.fitness), "Gene Id: ", self.fitness.index(max(self.fitness)), "Gene: ", bestGene)
+        #print("Top Fitness: ", max(self.fitness), "Gene Id: ", self.fitness.index(max(self.fitness)), "Gene: ", bestGene)
         
         
       

@@ -1,5 +1,8 @@
 import framework
 
-f = framework.framework()
+if __name__ == '__main__':
 
-f.run()
+
+    f = framework.framework()
+
+    f.run()

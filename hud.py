@@ -3,7 +3,7 @@ import button
 class hud:
     def __init__(self):
         self.buttonList = []
-        self.buttonList.append(button.button(0,0,100,35,"Evolve",self.toggleSimulating))
+        self.buttonList.append(button.button(0,0,100,35,"Evolve",self.toggleSimulatingOn))
         
         
         self.simulating = False
@@ -12,10 +12,14 @@ class hud:
         for b in self.buttonList:
             b.update(screen)
             
-    def toggleSimulating(self):
+    def toggleSimulatingOn(self):
         self.simulating = True
+        print("Toggle")
         
     def getSimulating(self):
-        return self.simulating
+        if self.simulating == True:
+            self.simulating = False
+            return True
+        return False
         
         

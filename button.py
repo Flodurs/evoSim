@@ -2,11 +2,6 @@ import sys
 import pygame
 
 
-
-
-
-
-
 class button():
     def __init__(self, x, y, width, height, buttonText='Button', onclickFunction=None):
         self.x = x
@@ -15,6 +10,8 @@ class button():
         self.height = height
         self.onclickFunction = onclickFunction
         self.font = pygame.font.SysFont('Arial', 40)
+        self.alreadyTrue = False
+       
        
         self.fillColors = {
             'normal': '#097969',
@@ -40,9 +37,15 @@ class button():
             self.buttonSurface.fill(self.fillColors['hover'])
 
             if pygame.mouse.get_pressed(num_buttons=3)[0]:
-                self.buttonSurface.fill(self.fillColors['pressed'])
-                if self.onclickFunction != None:
-                    self.onclickFunction()
+                if self.alreadyTrue == False:
+                    self.buttonSurface.fill(self.fillColors['pressed'])
+                    self.alreadyTrue = True
+                    if self.onclickFunction != None:
+                        self.onclickFunction()
+                    
+            else:
+            
+                self.alreadyTrue = False
           
 
         self.buttonSurface.blit(self.buttonSurf, [

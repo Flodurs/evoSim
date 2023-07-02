@@ -3,6 +3,8 @@ import world
 import genAlg
 import button
 import hud
+import multiprocessing
+import queue
 
 
 class framework:
@@ -15,6 +17,7 @@ class framework:
         #self.sim.placeGeneInWorld(1)
         self.w = world.world()
         self.mainhud = hud.hud()
+        
         
         
         
@@ -39,12 +42,23 @@ class framework:
     def run(self):
         pygame.init()
         
+        
         screen = pygame.display.set_mode([1000, 600])
         
-        
         running = True
-        
         simulating = False
+        
+        
+        #setting up simulation Process
+        
+        multiprocessing.set_start_method('spawn',force=True)
+        
+        
+        comQ = multiprocessing.Queue()
+        simulationProcess = multiprocessing.Process(target=self.sim.run,args=(comQ,))
+        simulationProcess.start()
+        command = "-"
+        
 
         while running:
 
@@ -58,20 +72,21 @@ class framework:
                     if event.key == pygame.K_u: 
                         self.w.update()
                         
-                        
-                        
                     if event.key == pygame.K_ESCAPE: 
                         running = False
                         
-                    
-            
-                        
-                        
             if self.mainhud.getSimulating():
-                self.sim.simulateGeneration()
-                self.w.reset()
-                self.w.setTiles(self.sim.getCurrentTopPeformTileList().copy())
-                        
+                command = "simulating"
+                
+                
+            if command != "-":
+                comQ.put(command)
+                command = '-'
+                
+                
+                    
+               
+                
                 
             
             
@@ -80,7 +95,7 @@ class framework:
             
             screen.fill((0,0,0))
             self.renderHud(screen)
-            self.renderTiles(screen)
+            #self.renderTiles(screen)
             
 
 

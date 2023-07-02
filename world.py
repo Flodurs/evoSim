@@ -8,7 +8,7 @@ class world:
         self.tileList = []
         
     def reset(self):
-        print("Reset World")
+        #print("Reset World")
         self.tileList = []
         
     def getTiles(self):
