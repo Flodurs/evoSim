@@ -1,6 +1,8 @@
 import tile
 import numpy as np
 
+#world class
+
 class world:
 
     def __init__(self):
