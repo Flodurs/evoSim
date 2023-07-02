@@ -1,8 +1,6 @@
 import tile
 import numpy as np
 
-#world class
-
 class world:
 
     def __init__(self):
@@ -56,15 +54,21 @@ class world:
                 nodes.append(self.tileList[t])
                 self.tileList[t].setUpdateFlag(1)
                 #print("Starting nodes: ",nodes)
-                for depth in range(10):
+                for depth in range(100):
+                    searchdone = True
                     #print("Search Iteration ",depth, " nodes: ", nodes)
                     for n in range(len(nodes)):
                         neighbours = self.getNeighbours(nodes[n])
+                        
+                            
                         for n in neighbours:
-                            if n.getUpdateFlag() == 0:
+                            if n.getUpdateFlag() == 0 and n.getSorte()==1:
+                                searchdone = False
                                 n.setUpdateFlag(1)
                                 nodes.append(n)
-                    
+                    if searchdone :
+                        #print("Cancelled Search")
+                        break
                 
             
         

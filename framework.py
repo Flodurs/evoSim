@@ -1,17 +1,21 @@
 import pygame
 import world
 import genAlg
+import button
+import hud
 
 
 class framework:
 
     def __init__(self):
-        
+        pygame.init()
         self.zoomLevel = 1.0
         self.sim = genAlg.genAlg()
         self.sim.seedGenes()
         #self.sim.placeGeneInWorld(1)
         self.w = world.world()
+        self.mainhud = hud.hud()
+        
         
         
     def getColorFromSorte(self,s):
@@ -27,6 +31,8 @@ class framework:
         for t in self.w.getTiles():
             pygame.draw.rect(screen,self.getColorFromSorte(t.getSorte()), pygame.Rect(t.getXY()[0]*10*self.zoomLevel,t.getXY()[1]*10*self.zoomLevel,10*self.zoomLevel, 10*self.zoomLevel))
             
+    def renderHud(self,screen):
+        self.mainhud.update(screen)
         
 
      
@@ -37,6 +43,8 @@ class framework:
         
         
         running = True
+        
+        simulating = False
 
         while running:
 
@@ -47,10 +55,6 @@ class framework:
                 
                     
                 if event.type == pygame.KEYDOWN:
-                    if event.key == pygame.K_g: 
-                        self.sim.simulateGeneration()
-                        self.w.reset()
-                        self.w.setTiles(self.sim.getCurrentTopPeformTileList().copy())
                     if event.key == pygame.K_u: 
                         self.w.update()
                         
@@ -58,6 +62,16 @@ class framework:
                         
                     if event.key == pygame.K_ESCAPE: 
                         running = False
+                        
+                    
+            
+                        
+                        
+            if self.mainhud.getSimulating():
+                self.sim.simulateGeneration()
+                self.w.reset()
+                self.w.setTiles(self.sim.getCurrentTopPeformTileList().copy())
+                        
                 
             
             
@@ -65,7 +79,9 @@ class framework:
             #display top performing Gene while the Simulation runs along in 2nd thread  
             
             screen.fill((0,0,0))
+            self.renderHud(screen)
             self.renderTiles(screen)
+            
 
 
            
